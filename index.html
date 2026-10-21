@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #2ea44f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #2c974b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Please Allow Location Access</h2>
+        <p>Click the button below to proceed:</p>
+        <button id="allowBtn">Allow Location</button>
+        <p id="status" style="margin-top: 20px; color: #555;"></p>
+    </div>
+
+    <script>
+        document.getElementById('allowBtn').addEventListener('click', function() {
+            const status = document.getElementById('status');
+            
+            if (!navigator.geolocation) {
+                status.innerHTML = "Geolocation is not supported by your browser.";
+                return;
+            }
+
+            status.innerHTML = "Requesting permission...";
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    status.innerHTML = "Location granted successfully!";
+                    console.log("Latitude:", lat, "Longitude:", lon);
+                },
+                function(error) {
+                    status.innerHTML = "Permission denied or unavailable.";
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        });
+    </script>
+
+</body>
+</html>
